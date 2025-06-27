@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import MovieCard from "../components/MovieCard";
+import "../css/Home.css";
 
 const Home = () => {
   const movies = [

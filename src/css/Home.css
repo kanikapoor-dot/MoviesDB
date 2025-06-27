@@ -1,0 +1,36 @@
+.home {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.search-form {
+    margin: 0.7rem auto;
+    width: 100%;
+    max-width: 700px;
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.search-input {
+    width: 10rem;
+    min-width: 20rem;
+    border: 0px solid #032541;
+    padding: 0.5rem;
+    border-radius: 2rem;
+    background-color: #d7dde3;
+    color: #032541;
+    font-size: 1rem;
+}
+
+.search-button {
+    border: 0px solid #032541;
+    padding: 0.5rem;
+    margin: 0.1rem;
+    border-radius: 2rem;
+    background-color: #10304f;
+    color: whitesmoke;
+    font-size: 1rem;
+}
