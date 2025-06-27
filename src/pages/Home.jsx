@@ -1,46 +1,54 @@
-import React from "react";
-import { useState } from "react";
+import React, { use } from "react";
+import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
 import "../css/Home.css";
+import { getPopularMovies, searchMovies } from "../services/api";
 
 const Home = () => {
-  const movies = [
-    {
-      title: "John Wick",
-      year: "2017",
-      url: "https://example.com/john-wick.jpg",
-    },
-    {
-      title: "The Matrix",
-      year: "1999",
-      url: "https://example.com/the-matrix.jpg",
-    },
-    {
-      title: "Inception",
-      year: "2010",
-      url: "https://example.com/inception.jpg",
-    },
-    {
-      title: "Interstellar",
-      year: "2014",
-      url: "https://example.com/interstellar.jpg",
-    },
-  ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleSearch = (event) => {
+  useEffect(() => {
+    const fetchPopularMovies = async () => {
+      try {
+        const popularMovies = await getPopularMovies();
+        setMovies(popularMovies);
+        console.log(popularMovies);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPopularMovies();
+  }, []);
+
+  const handleSearch = async (event) => {
     event.preventDefault();
     if (searchQuery.trim() === "") {
       alert("Please enter a search query.");
       return;
     }
-    console.log("Searching for:", searchQuery);
+    if (loading) return;
+    setLoading(true);
+    try {
+      const searchResults = await searchMovies(searchQuery);
+      setMovies(searchResults);
+      console.log(searchResults);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+    setSearchQuery("");
   };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-
-  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <div className="home">
@@ -56,11 +64,17 @@ const Home = () => {
           Search
         </button>
       </form>
-      <div className="movies-grid">
-        {movies.map((movie) => (
-          <MovieCard key={movie.title} movie={movie} />
-        ))}
-      </div>
+      {error && <div className="error-message">Error: {error}</div>}
+
+      {loading ? (
+        <div className="loading">Loading movies...</div>
+      ) : (
+        <div className="movies-grid">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@
     background-color: #032541;
     padding: 1rem;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
 }
@@ -26,7 +27,7 @@
 
 .navbar .navbar-links {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
 }
 
 .navbar-links .nav-link:hover {
